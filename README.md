@@ -1,3 +1,4 @@
 Update me.
 
-[Picture from our meetup here]
+![first ruby burgers](images/2015-05-09.jpeg)
+First ruby burgers
