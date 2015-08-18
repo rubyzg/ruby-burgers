@@ -31,6 +31,10 @@ The following is the _standard file structure_ for a Ruby gem.
  + Rakefile
  + cool_stuff.gemspec
 
+#### Use Bundler for setting up a gem
+
+Make your life easier, use Bundler with a command __bundle gem core__ when creating a gem structure.
+
 #### Description of the structure
 
 * __cool\_stuff\_stuff.gemspec__: all information about a gem is provided by a developer in this file. This information is used to build gems specification. It is done so using Specification class.
@@ -86,3 +90,4 @@ __Resources:__
 * [Official RubyGems site](https://rubygems.org/)
 * [RDoc](https://rubygems.org/gems/rdoc/versions/4.2.0) and [Yard](http://yardoc.org/)
 * [curl](https://en.wikipedia.org/wiki/CURL)'
+* [Using Bundler with RubyGems](http://bundler.io/rubygems.html)
