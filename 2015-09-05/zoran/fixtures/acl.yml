@@ -1,0 +1,43 @@
+everyone:
+  - controller: "sessions"
+    actions: :any
+  - controller: "home"
+    actions: :any
+
+super_admins:
+  - controllers: :any
+    actions: :any
+
+admins:
+  - controllers: "admin/"
+    actions: :any
+
+auditors:
+  - controllers: "admin/"
+    actions:
+      - index
+      - show
+
+techs:
+  - controllers: "admin/"
+    actions:
+      - index
+      - show
+  - controller: "admin/settings"
+    actions:
+      - index
+      - show
+      - edit
+      - update
+  - controller: "admin/devices"
+    actions:
+      - push
+      - edit_note
+      - update_note
+
+enroll_new_device:
+  - controller: "enroll"
+    actions: :any
+  - controller: "home"
+    actions:
+      - self_service

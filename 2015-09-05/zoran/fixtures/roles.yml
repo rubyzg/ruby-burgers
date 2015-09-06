@@ -1,0 +1,4 @@
+admins:
+  - email: "admin@promdm.net"
+auditors:
+  - email: "auditor@foo.com"
