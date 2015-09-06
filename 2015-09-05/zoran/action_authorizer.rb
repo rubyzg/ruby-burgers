@@ -1,4 +1,8 @@
 # an action authorization for Rails app based on params["controller"] and params["action"]
+# found similar, 4 yo project by Sam Grönblom (found on Github searching by the name of the class ActionAuthorizer)
+# https://github.com/sgronblo/action_authorizer
+# 5 commits, 3 stars, and no issues! ;)
+
 class ActionAuthorizer
   attr_reader :acl, :controller, :action
 
