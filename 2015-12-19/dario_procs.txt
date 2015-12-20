@@ -104,24 +104,24 @@ Procs
         For example:
         ["john", "doe"].map(&:capitalize) => ["John", "Doe"]
 
-  Questions (considering the definition method below):
-    def catch_that_block(arg, &block)
-      p arg
-      p block.call
-    end
+Questions (considering the definition method below):
+  def catch_that_block(arg, &block)
+    p arg
+    p block.call
+  end
 
-    1) will this work?
-      p = proc { "Catch me if you can!" }
-      catch_that_block(5, p)
+  1) will this work?
+     p = proc { "Catch me if you can!" }
+     catch_that_block(5, p)
 
-    2) what will the following call to catch_that_block produce?
-      catch_that_block(5, &:upcase) { "some proc" }
+  2) what will the following call to catch_that_block produce?
+     catch_that_block(5, &:upcase) { "some proc" }
 
-    3) what will this call result in?
-      catch_that_block(5)
+  3) what will this call result in?
+     catch_that_block(5)
 
-  Answers:
-   1) it won't. -> ArgumentError:...(2 for 1)
-   2) it will be -> SyntaxError: both block arg and actual block given
-   3) NoMethodError: undefined method 'call' for nil:NilClass
-      Note that Ruby is not complaining here with an ArgumentError.
+Answers:
+  1) it won't. -> ArgumentError:...(2 for 1)
+  2) it will be -> SyntaxError: both block arg and actual block given
+  3) NoMethodError: undefined method 'call' for nil:NilClass
+     Note that Ruby is not complaining here with an ArgumentError.
