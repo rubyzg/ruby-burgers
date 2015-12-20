@@ -1,0 +1,127 @@
+Anonymous functions
+===================
+
+> Callable objects
+  - objects that respond to #call method
+  - methods, Procs, Lambdas
+
+Procs
+-----
+> Proc essentials
+
+1. basics of creating and using procs (this doc describe only this aspect)
+2. how procs handle arguments and variable bindings (different than methods)
+3. role of procs as closures
+
+1. creating procs
+  - can be created in two ways. The following is equivalent...
+    p1 = proc { "hello procs." }
+    p2 = Proc.new { "hello procs." }
+    p1.call == p2.call => true
+
+  #proc : a method that takes a block and instantiates a Proc object
+
+***                                                     ***
+** Procs are objects - call them, pass them, assign them **
+***                                                     ***
+
+2. Captain Obvious: "Procs are not blocks!"
+  - when you create a Proc you always pass it a block, but not every
+    block is a basis for Proc...hmm, okay.
+
+3. Methods and procs
+  - when using '&' we tell Ruby that we will pass it a proc in a place of the
+    argument
+
+  def some_method(int, &block)
+    block.call
+  end
+
+  - do not let the presence of '&block' tricks you into thinking that it is a
+    regular argument! It is not an argument, although it is placed inside of an
+    argument list.
+
+    def x(a, b, &c)
+      # code
+    end
+    x(1, 2, 3) => ArgumentError...(3 for 2)
+
+  - '&' appears on the callers side as well..
+    p = proc { |el| el + "!" }
+    %w{ "eat code repeat" }.each(&p)
+
+***                                                 ***
+** Blocks are not objects, rather a syntax construct **
+***                                                 ***
+
+4. "Magic" conversion from a block to a proc
+  - life purpose of a..
+    ..block, is to be consumed. :(
+    ..proc, is to consume.
+
+  - Following depicts in steps how Ruby handles this magic, starting from a
+    method call towards a method definition.
+  3) catch_that_block { "Catch me if you can!" }
+  2) catch_that_block( Proc.new { "Catch me if you can!" } -> (we don't see this step)
+  1) def catch_that_block(&block) -> binding proc object to a local var 'block'
+       puts "Gotch'ya!"
+       block.call
+     end
+
+5. So, what does '&' do exactly!?
+  - on a callee's side it calls #to_proc on an object.
+  - on a callers side it tells Ruby that we want to catch a proc, and it binds
+    that proc to a local variable.
+
+  - considering the given, these are scenarios in which a proc can be passed to a
+    method and binded to a local variable:
+    1. passing a block to a method.
+      awesome_method { "at this point, this is ordinary block" }
+
+      What happens:
+      1.1. Ruby internally instantiates object of a Proc class, using a given
+      block. So it does something like..
+        awesome_method(Proc.new [given block])
+      1.2. ..and assigns it to a local variable (in this case, named 'blok')
+        def awesome_method(&blok)
+
+    2. passing a proc to a method. 'cool_proc' is an instance of Proc class.
+      cool_proc = proc { puts "I'm the coolest of all procs." }
+      awesome_method(&cool_proc)
+
+      2.1. Ruby calls #to_proc on a given object again. This time however, a
+      passed object is a proc so Ruby does not have much work to do since it just
+      returns that proc.
+      2.2. assigns it to a local variable.
+
+    3. passing an object to a method. Object must respond to #to_proc method.
+      awesome_method(&funny_object)
+
+      3.1. again, #to_proc is called on a given object.
+      3.2. and again, a proc gets binded to a local variable.
+
+      - this can be seen in shorthand calls to some methods of Enumerable module.
+        For example:
+        ["john", "doe"].map(&:capitalize) => ["John", "Doe"]
+
+  Questions (considering the definition method below):
+    def catch_that_block(arg, &block)
+      p arg
+      p block.call
+    end
+
+    1) will this work?
+      p = proc { "Catch me if you can!" }
+      catch_that_block(5, p)
+
+    2) what will the following call to catch_that_block produce?
+      catch_that_block(5, &:upcase) { "some proc" }
+
+    3) what will this call result in?
+      catch_that_block(5)
+
+  Answers:
+   1) it won't. -> ArgumentError:...(2 for 1)
+   2) it will be -> SyntaxError: both block arg and actual block given
+   3) NoMethodError: undefined method 'call' for nil:NilClass
+      Note that Ruby is not complaining here with an ArgumentError.
