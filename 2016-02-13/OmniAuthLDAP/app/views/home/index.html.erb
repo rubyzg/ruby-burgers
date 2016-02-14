@@ -1,0 +1,8 @@
+<p id="notice"><%= notice %></p>
+
+<% if signed_in? %>
+current user: <%= current_user %> <%= link_to "Sign Out", sign_out_path %>
+
+<% else %>
+<%= link_to "Sign In with LDAP", auth_path('ldap') %>
+<% end %>
