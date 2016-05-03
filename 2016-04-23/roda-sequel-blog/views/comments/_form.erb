@@ -1,0 +1,7 @@
+<form action="/posts/<%= comment.post_id %>/comments" method="post">
+  <div class="form-group">
+    <label for="comment-body">Body</label>
+    <textarea name="comment[body]" class="form-control" id="comment-body"></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Create comment</button>
+</form>

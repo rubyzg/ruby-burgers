@@ -1,0 +1,14 @@
+<a href="/posts" class="btn btn-default">&larr; All posts</a>
+
+<h2><%= @post.title %></h1>
+
+<p><%= markdown(@post.body) %></p>
+
+<h3>Comments</h3>
+
+<% @comments.each do |comment| %>
+  <%= partial "comments/comment", locals: {comment: comment} %>
+<% end %>
+<%= partial "comments/form", locals: {comment: @new_comment} %>
+
+<%= partial "posts/actions", locals: {post: @post} %>

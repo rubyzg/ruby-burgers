@@ -1,0 +1,16 @@
+source "https://rubygems.org"
+
+gem "roda"
+gem "sequel"
+gem "pg"
+gem "tilt"
+gem "kramdown"
+
+group :development do
+  gem "shotgun"
+end
+
+group :development, :test do
+  gem "dotenv"
+  gem "pry"
+end

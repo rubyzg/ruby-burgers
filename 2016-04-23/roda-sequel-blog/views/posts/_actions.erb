@@ -1,0 +1,5 @@
+<form action="/posts/<%= post.id %>" method="post" class="form-inline">
+  <input type="hidden" name="_method" value="delete">
+  <a href="/posts/<%= post.id %>/edit" class="btn btn-warning">Edit</a>
+  <button type="submit" class="btn btn-danger">Delete</button>
+</form>

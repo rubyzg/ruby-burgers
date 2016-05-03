@@ -1,0 +1,44 @@
+require "bundler/setup"
+
+task :console do
+  require "./app"
+  require "logger"
+  require "pry"
+
+  DB.logger = Logger.new(STDOUT)
+  DB.transaction(rollback: :always, auto_savepoint: true) { Pry.start }
+end
+
+namespace :db do
+  task :setup do
+    require "./config/variables"
+    require "./config/sequel"
+  end
+
+  task :migrate => :setup do
+    migrate
+    dump_schema
+  end
+
+  task :remigrate => :setup do
+    migrate(0)
+    migrate
+    dump_schema
+  end
+
+  task :demigrate => :setup do
+    migrate(0)
+    dump_schema
+  end
+
+  def migrate(version = nil)
+    Sequel.extension :migration
+    Sequel::Migrator.apply(DB, "db/migrations", version)
+  end
+
+  def dump_schema
+    system "pg_dump #{DB.opts[:database]} > db/schema.sql"
+    DB.extension :schema_dumper
+    File.write("db/schema.rb", DB.dump_schema_migration(same_db: true))
+  end
+end

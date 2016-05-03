@@ -1,0 +1,5 @@
+<a href="/posts/new" class="btn btn-default">+ New post</a>
+
+<% @posts.each do |post| %>
+  <%= partial "posts/post", locals: {post: post} %>
+<% end %>
